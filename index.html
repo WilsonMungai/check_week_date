@@ -34,6 +34,11 @@
       // Send the result back to Thunkable
       ThunkableWebviewerExtension.postMessage(JSON.stringify({ isInCurrentWeek: result }));
     });
+
+     // Notify Thunkable that the page has loaded
+     ThunkableWebviewerExtension.postMessage(
+      JSON.stringify({ type: "page loaded" })
+    );
   </script>
 </body>
 </html>
