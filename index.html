@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://thunkable.github.io/webviewer-extension/thunkableWebviewerExtension.js"></script>
+</head>
+<body>
+  <script>
+    // Function to check if a date is within the current week
+    const isDateInCurrentWeek = (dateString) => {
+      const inputDate = new Date(dateString);
+      const today = new Date();
+
+      // Get current week's start (Sunday) and end (Saturday)
+      const startOfWeek = new Date(today);
+      startOfWeek.setDate(today.getDate() - today.getDay()); // Move to Sunday
+
+      const endOfWeek = new Date(startOfWeek);
+      endOfWeek.setDate(startOfWeek.getDate() + 6); // Move to Saturday
+
+      // Check if input date is within this range
+      return inputDate >= startOfWeek && inputDate <= endOfWeek;
+    };
+
+    // Listen for messages from Thunkable
+    ThunkableWebviewerExtension.receiveMessage((message) => {
+      const receivedData = JSON.parse(message);
+      const selectedDate = receivedData.date; // Example format: "2025-03-04"
+
+      // Check if date is in the current week
+      const result = isDateInCurrentWeek(selectedDate);
+
+      // Send the result back to Thunkable
+      ThunkableWebviewerExtension.postMessage(JSON.stringify({ isInCurrentWeek: result }));
+    });
+  </script>
+</body>
+</html>
